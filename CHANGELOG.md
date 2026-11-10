@@ -5,6 +5,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Added
+
+- Internet Access Policy. Firewalls such as Little Snitch show why the app connects to `api.anthropic.com`.
+
 ## [0.1] - 2026-11-10
 
 ### Added

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ApplicationDescription</key>
+	<string>ClaudeUsageBar shows the usage limits of your Claude account in the menu bar.</string>
+	<key>DeveloperName</key>
+	<string>Marc Görtz</string>
+	<key>Website</key>
+	<string>https://github.com/mrcgrtz/claude-usage-bar</string>
+	<key>Connections</key>
+	<array>
+		<dict>
+			<key>IsIncoming</key>
+			<false/>
+			<key>Host</key>
+			<string>api.anthropic.com</string>
+			<key>NetworkProtocol</key>
+			<string>TCP</string>
+			<key>Port</key>
+			<string>443</string>
+			<key>Purpose</key>
+			<string>ClaudeUsageBar gets the usage of your Claude account from Anthropic. It sends the login token of Claude Code with the request. It connects when you click Refresh now, at the auto refresh interval, and after the Mac wakes from sleep.</string>
+			<key>DenyConsequences</key>
+			<string>If you deny these connections, ClaudeUsageBar cannot show your usage. The menu then shows an error.</string>
+		</dict>
+	</array>
+</dict>
+</plist>

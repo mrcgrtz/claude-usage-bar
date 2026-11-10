@@ -15,6 +15,7 @@ This file tells you how to change ClaudeUsageBar. For what the app does and how 
 | --- | --- |
 | `Sources/main.swift` | All of the app code. |
 | `Info.plist` | The bundle identifier, the version and the menu bar app settings. |
+| `InternetAccessPolicy.plist` | The [Internet Access Policy](https://www.obdev.at/iap/), which tells firewalls such as Little Snitch which connections the app makes and why. Update it when the app connects to a new host. |
 | `build.sh` | Builds, installs and packages the app. |
 | `scripts/make-icon.swift` | Draws `AppIcon.icns`. |
 | `scripts/make-dmg-background.swift` | Draws `DMGBackground.tiff`, the background of the DMG window. |

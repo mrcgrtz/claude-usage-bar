@@ -20,6 +20,8 @@ rm build/ClaudeUsageBar-x86_64 build/ClaudeUsageBar-arm64
 
 cp Info.plist "$APP/Contents/Info.plist"
 cp AppIcon.icns "$APP/Contents/Resources/"
+# Firewalls such as Little Snitch show the Internet Access Policy when the app connects.
+cp InternetAccessPolicy.plist "$APP/Contents/Resources/"
 # Optional custom menu bar icon (black on transparent, used as a template image).
 [ -f claude-icon.png ] && cp claude-icon.png "$APP/Contents/Resources/"
 
