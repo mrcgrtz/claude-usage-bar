@@ -5,6 +5,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.2] - 2026-11-11
+
 ### Added
 
 - Internet Access Policy. Firewalls such as Little Snitch show why the app connects to `api.anthropic.com`.
@@ -23,5 +25,6 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - README with a screenshot, and changelog.
 - SwiftLint check in GitHub Actions.
 
-[Unreleased]: https://github.com/mrcgrtz/claude-usage-bar/compare/v0.1...main
+[Unreleased]: https://github.com/mrcgrtz/claude-usage-bar/compare/v0.2...main
+[0.2]: https://github.com/mrcgrtz/claude-usage-bar/releases/tag/v0.2
 [0.1]: https://github.com/mrcgrtz/claude-usage-bar/releases/tag/v0.1
