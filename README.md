@@ -1,0 +1,71 @@
+# ClaudeUsageBar
+
+ClaudeUsageBar is a macOS menu bar app. It shows how much of your Claude plan limits you used.
+
+![ClaudeUsageBar menu with the 5-hour, weekly and extra usage](docs/screenshot.png)
+
+The menu bar shows two values: the 5-hour limit and the weekly limit, for example `42% · 18%`.
+
+The menu shows:
+
+- Each limit, the percentage that you used, and the time when it resets.
+- The extra usage and its cap, if extra usage is on.
+- The time of the last update.
+- An error message, if the last update failed. The menu bar then shows `⚠`.
+
+## Requirements
+
+- macOS 14 or later, on an Intel Mac or a Mac with Apple silicon.
+- [Claude Code](https://claude.com/claude-code), logged in with a Claude account. The app reads the login token that Claude Code keeps in the Keychain.
+- The Xcode Command Line Tools, only if you build the app yourself. See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Install
+
+1. Download `ClaudeUsageBar.dmg` from the latest [release](https://github.com/mrcgrtz/claude-usage-bar/releases).
+2. Open the file and drag `ClaudeUsageBar.app` to the `Applications` folder.
+3. Open the app. The app is not notarised, thus macOS blocks it the first time. Go to **System Settings → Privacy & Security** and click **Open Anyway**.
+4. When macOS asks for access to the `Claude Code-credentials` Keychain item, click **Always Allow**.
+
+To start the app when you log in, add it to **System Settings → General → Login Items**.
+
+## Build
+
+```sh
+./build.sh            # Builds build/ClaudeUsageBar.app
+./build.sh --install  # Builds the app and copies it to ~/Applications
+./build.sh --dmg      # Builds the app and makes build/ClaudeUsageBar.dmg
+```
+
+The app icon is `AppIcon.icns`. To change it, edit `scripts/make-icon.swift` and run `swift scripts/make-icon.swift` from the repository root.
+
+The DMG window background is `DMGBackground.tiff`. To change it, edit `scripts/make-dmg-background.swift` and run `swift scripts/make-dmg-background.swift` from the repository root. The window layout is `DMGLayout.DS_Store`. If you move the icons in the picture, change their positions in `scripts/make-dmg-layout.sh` and run it on a Mac. Finder then opens the window for a short time and the script saves the new layout.
+
+To use a custom menu bar icon, put a `claude-icon.png` file in the repository root before you build. Use a black icon on a transparent background. macOS changes its colour for light and dark menu bars.
+
+## Use
+
+- **Refresh now** (⌘R) gets the usage data immediately.
+- **Auto refresh** sets the update interval: off, or every 5, 10, 20, 30 or 60 minutes. The default is 30 minutes.
+- The app also gets new data 10 seconds after the Mac wakes from sleep.
+
+## Troubleshooting
+
+| Message | Cause | Fix |
+| --- | --- | --- |
+| Claude Code Keychain credentials unavailable | The app cannot read the Keychain item. | Log in to Claude Code. Make sure that you allowed Keychain access. |
+| Token expired - run claude to refresh it | The OAuth token is not valid anymore. | Run `claude` once. Claude Code then gets a new token. |
+| Usage API returned HTTP … | The usage API sent an error. | Try again later. |
+
+## Release
+
+GitHub builds the release when you push a version tag:
+
+1. Change `CFBundleShortVersionString` in `Info.plist` and move the **Unreleased** entries in `CHANGELOG.md` to the new version.
+2. Commit the change on `main`, then tag and push it:
+
+   ```sh
+   git tag v0.2
+   git push origin main v0.2
+   ```
+
+The release workflow checks that the tag matches the version in `Info.plist`, runs `./build.sh --dmg` and makes a GitHub release with the DMG. The release notes are the section of the version in `CHANGELOG.md`.

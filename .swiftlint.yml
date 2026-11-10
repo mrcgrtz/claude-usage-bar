@@ -1,0 +1,6 @@
+included:
+  - Sources
+
+identifier_name:
+  # Decodable properties use the snake_case keys of the API JSON.
+  allowed_symbols: ["_"]

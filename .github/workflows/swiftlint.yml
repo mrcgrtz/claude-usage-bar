@@ -1,0 +1,18 @@
+# CI only lints the sources. Build the app locally with ./build.sh.
+
+name: SwiftLint
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+
+jobs:
+  swiftlint:
+    runs-on: ubuntu-latest
+    container: ghcr.io/realm/swiftlint:0.57.0
+    steps:
+      - uses: actions/checkout@v4
+      # The reporter shows violations as annotations on the pull request.
+      - run: swiftlint lint --strict --reporter github-actions-logging

@@ -1,0 +1,38 @@
+# Builds the DMG and makes a GitHub release when a version tag such as v0.2 is pushed.
+
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    # build.sh needs Swift 6.2, which comes with Xcode 26.
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check the version
+        run: |
+          VERSION=$(/usr/libexec/PlistBuddy -c 'Print CFBundleShortVersionString' Info.plist)
+          if [ "v$VERSION" != "$GITHUB_REF_NAME" ]; then
+            echo "::error::Info.plist has version $VERSION, but the tag is $GITHUB_REF_NAME."
+            exit 1
+          fi
+      - run: ./build.sh --dmg
+      - name: Make the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # The release notes are the section of this version in CHANGELOG.md.
+          VERSION=${GITHUB_REF_NAME#v}
+          awk -v heading="## [$VERSION]" '
+            /^## \[/ { found = index($0, heading) == 1; next }
+            /^\[/ { found = 0 }
+            found
+          ' CHANGELOG.md > build/notes.md
+          gh release create "$GITHUB_REF_NAME" build/ClaudeUsageBar.dmg \
+            --title "$VERSION" --notes-file build/notes.md --verify-tag
