@@ -11,7 +11,7 @@ The menu shows:
 - Each limit, the percentage that you used, and the time when it resets.
 - The extra usage and its cap, if extra usage is on.
 - The time of the last update.
-- An error message, if the last update failed. The menu bar then shows `⚠`.
+- An error message, if the last update failed. The menu bar then shows a warning triangle instead of the gauge.
 
 ## Requirements
 

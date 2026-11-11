@@ -57,7 +57,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         // A fixed autosave name gives the menu bar item the same identity at each launch.
         item = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         item.autosaveName = "ClaudeUsageBar"
-        item.button?.image = Self.icon()
         item.button?.imagePosition = .imageLeading
         let menu = NSMenu()
         menu.delegate = self
@@ -81,9 +80,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     // Template mode lets macOS tint the icon for light and dark menu bars.
-    private static func icon() -> NSImage? {
-        let image = Bundle.main.image(forResource: "claude-icon")
-            ?? NSImage(systemSymbolName: "gauge.with.dots.needle.67percent", accessibilityDescription: "Claude usage")
+    private static func icon(warning: Bool = false) -> NSImage? {
+        let gauge = "gauge.with.dots.needle.67percent"
+        let warningSymbol = "exclamationmark.triangle"
+        let image = warning
+            ? NSImage(systemSymbolName: warningSymbol, accessibilityDescription: "Error")
+            : Bundle.main.image(forResource: "claude-icon")
+                ?? NSImage(systemSymbolName: gauge, accessibilityDescription: "Claude usage")
         image?.size = NSSize(width: 16, height: 16)
         image?.isTemplate = true
         return image
@@ -101,14 +104,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     private func updateTitle() {
-        let warning = errorMessage != nil ? " ⚠" : ""
         let title: String
         if usage != nil {
-            title = "\(used(limit("session"))) · \(used(limit("weekly_all")))\(warning)"
+            title = " \(used(limit("session"))) · \(used(limit("weekly_all")))"
         } else {
-            title = errorMessage != nil ? warning : "…"
+            title = errorMessage != nil ? "" : " …"
         }
-        item.button?.title = " " + title.trimmingCharacters(in: .whitespaces)
+        item.button?.image = Self.icon(warning: errorMessage != nil)
+        item.button?.title = title
         item.button?.toolTip = errorMessage ?? "Claude usage: 5-hour · weekly"
     }
 
