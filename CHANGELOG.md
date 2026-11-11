@@ -13,6 +13,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Changed
 
 - **Launch at Login** moved from the menu to the Settings window.
+- The weekly limit of a single model shows the name of the model, for example “Weekly (Fable)” instead of “weekly scoped”.
 
 ## [0.3] - 2026-11-11
 

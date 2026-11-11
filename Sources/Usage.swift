@@ -10,6 +10,36 @@ struct Usage: Decodable {
         let kind: String
         let percent: Double?
         let resets_at: String?
+        /// What a scoped limit counts, for example the usage of one model.
+        let scope: Scope?
+
+        /// The name of the limit in the menu, for example "Weekly (Fable)" for the weekly limit of one model.
+        var label: String {
+            switch kind {
+            case "session":
+                return String(localized: "5-hour")
+            case "weekly_all":
+                return String(localized: "Weekly")
+            case "weekly_scoped":
+                guard let name = scope?.name else { return String(localized: "Weekly (scoped)") }
+                return String(localized: "Weekly (\(name))")
+            default:
+                return kind.replacingOccurrences(of: "_", with: " ")
+            }
+        }
+    }
+
+    struct Scope: Decodable {
+        let model: Name?
+        let surface: Name?
+
+        var name: String? {
+            model?.display_name ?? surface?.display_name
+        }
+    }
+
+    struct Name: Decodable {
+        let display_name: String?
     }
 
     struct Spend: Decodable {
@@ -46,6 +76,21 @@ struct Usage: Decodable {
             }
             return used.amount / cap.amount * 100
         }
+    }
+}
+
+extension Usage.Limit {
+    private enum CodingKeys: String, CodingKey {
+        case kind, percent, resets_at, scope
+    }
+
+    // A new format of the scope must not stop the app from showing the other values.
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        kind = try container.decode(String.self, forKey: .kind)
+        percent = try container.decodeIfPresent(Double.self, forKey: .percent)
+        resets_at = try container.decodeIfPresent(String.self, forKey: .resets_at)
+        scope = try? container.decodeIfPresent(Usage.Scope.self, forKey: .scope)
     }
 }
 

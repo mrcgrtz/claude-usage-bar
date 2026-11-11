@@ -8,6 +8,8 @@
 /* Limits */
 "5-hour" = "5 Stunden";
 "Weekly" = "Woche";
+"Weekly (%@)" = "Woche (%@)";
+"Weekly (scoped)" = "Woche (eingeschränkt)";
 "N/A" = "k. A.";
 "unknown" = "unbekannt";
 "%@: %@ used, resets %@" = "%1$@: %2$@ genutzt, Reset %3$@";

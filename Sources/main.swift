@@ -8,7 +8,6 @@ import UserNotifications
 final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, UNUserNotificationCenterDelegate {
     private let settingsKey = "refreshMinutes"
     private let refreshOptions = [5, 10, 20, 30, 60]
-    private let labels = ["session": String(localized: "5-hour"), "weekly_all": String(localized: "Weekly")]
 
     private var item: NSStatusItem!
     private var usage: Usage?
@@ -241,7 +240,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, UNUser
         menu.removeAllItems()
         if let usage {
             for limit in usage.limits {
-                let label = labels[limit.kind] ?? limit.kind.replacingOccurrences(of: "_", with: " ")
+                let label = limit.label
                 addInfo(menu, String(localized: "\(label): \(used(limit)) used, resets \(resetTime(limit.resets_at))"))
             }
             if let spend = usage.spend, spend.enabled == true, let spent = spend.used, let cap = spend.limit {
