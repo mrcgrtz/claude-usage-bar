@@ -54,7 +54,7 @@ To use a custom menu bar icon, put a `claude-icon.png` file in the repository ro
 - The app also gets new data 10 seconds after the Mac wakes from sleep.
 - **Settings…** (⌘,) opens the settings, with the panes **General** and **Rules**.
 - **Download Version …** shows when a new version is available. It opens the release on GitHub.
-- **About ClaudeUsageBar** shows the version and a link to the website of the developer.
+- **About ClaudeUsageBar** shows the version, the license and a link to the website of the developer.
 
 The **General** pane has two groups. **Startup and Updates** has:
 
@@ -116,3 +116,7 @@ GitHub builds the release when you push a version tag:
    ```
 
 The release workflow checks that the tag matches the version in `Info.plist`, runs `./build.sh --dmg` and makes a GitHub release with the DMG. The release notes are the section of the version in `CHANGELOG.md`.
+
+## License
+
+ClaudeUsageBar is released under the [MIT License](LICENSE.md).
