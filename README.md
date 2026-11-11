@@ -38,6 +38,7 @@ To start the app when you log in, turn on **Launch at Login** in **Settings…**
 ./build.sh            # Builds build/ClaudeUsageBar.app
 ./build.sh --install  # Builds the app and copies it to ~/Applications
 ./build.sh --dmg      # Builds the app and makes build/ClaudeUsageBar.dmg
+./test.sh             # Runs the tests
 ```
 
 The app icon is `AppIcon.icns`. To change it, edit `scripts/make-icon.swift` and run `swift scripts/make-icon.swift` from the repository root.

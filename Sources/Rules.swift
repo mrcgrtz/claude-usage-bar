@@ -107,10 +107,14 @@ struct Shortcut: Codable, Hashable, Identifiable {
 }
 
 enum Shortcuts {
-    /// The shortcuts of the user. The shortcuts command prints each one as "Name (identifier)".
+    /// The shortcuts of the user.
     static func all() async -> [Shortcut] {
-        let result = await shortcuts(["list", "--show-identifiers"])
-        return result.output.split(separator: "\n").compactMap { line in
+        parse(await shortcuts(["list", "--show-identifiers"]).output)
+    }
+
+    /// The shortcuts command prints each shortcut as "Name (identifier)".
+    static func parse(_ output: String) -> [Shortcut] {
+        output.split(separator: "\n").compactMap { line in
             guard line.hasSuffix(")"), let open = line.range(of: " (", options: .backwards) else { return nil }
             let id = line[open.upperBound..<line.index(before: line.endIndex)]
             return Shortcut(id: String(id), name: String(line[..<open.lowerBound]))

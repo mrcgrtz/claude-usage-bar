@@ -19,14 +19,17 @@ This file tells you how to change ClaudeUsageBar. For what the app does and how 
 | `Sources/Settings.swift` | The Settings window, and **Launch at Login**. |
 | `Sources/MenuBar.swift` | Which values the menu bar shows. |
 | `Sources/Updates.swift` | The daily check for a new release on GitHub. |
+| `Tests/main.swift` | The tests of the app logic. |
 | `Info.plist` | The bundle identifier, the version and the menu bar app settings. |
 | `InternetAccessPolicy.plist` | The [Internet Access Policy](https://www.obdev.at/iap/), which tells firewalls such as Little Snitch which connections the app makes and why. Update it when the app connects to a new host. Its texts are in `Resources/*.lproj/InternetAccessPolicy.strings`. |
 | `Resources/de.lproj/Localizable.strings` | The German texts of the app. |
 | `build.sh` | Builds, installs and packages the app. |
+| `test.sh` | Builds and runs the tests. |
 | `scripts/make-icon.swift` | Draws `AppIcon.icns`. |
 | `scripts/make-dmg-background.swift` | Draws `DMGBackground.tiff`, the background of the DMG window. |
 | `scripts/make-dmg-layout.sh` | Saves `DMGLayout.DS_Store`, the Finder layout of the DMG window. |
 | `.github/workflows/release.yml` | Builds the DMG and makes the GitHub release for a version tag. |
+| `.github/workflows/tests.yml` | Runs the tests on a Mac. |
 | `CHANGELOG.md` | The changes in each release. |
 
 The project has no Xcode project and no Swift package. `build.sh` compiles the files in `Sources` with `swiftc`.
@@ -58,7 +61,17 @@ If you do not have SwiftLint, use Docker:
 docker run --rm -v "$PWD":/work -w /work ghcr.io/realm/swiftlint:0.57.0 swiftlint lint --strict
 ```
 
-The project has no automatic tests. Build the app and do a check of the change in the menu bar.
+## Test
+
+The tests check the rules, the menu bar values, the texts of the limits, the version check and the list of shortcuts. CI runs them on each push and pull request. Run them before you commit:
+
+```sh
+./test.sh
+```
+
+`test.sh` compiles `Tests/main.swift` with the app code, without `Sources/main.swift`, and runs it in English with US formats. Add a test when you change the logic in `Usage.swift`, `Rules.swift`, `MenuBar.swift` or `Updates.swift`.
+
+The tests do not cover the menu, the Settings window, notifications or running a shortcut. Build the app and check those changes in the app.
 
 ## Change the icon or the DMG window
 
