@@ -12,6 +12,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Changed
 
 - Reset times and extra usage amounts follow the time format, language and region of the Mac.
+- Menu items use title-style capitalisation, as in other Mac apps.
 
 ## [0.2] - 2026-11-11
 

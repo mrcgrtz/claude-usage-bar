@@ -44,8 +44,8 @@ To use a custom menu bar icon, put a `claude-icon.png` file in the repository ro
 
 ## Use
 
-- **Refresh now** (⌘R) gets the usage data immediately.
-- **Auto refresh** sets the update interval: off, or every 5, 10, 20, 30 or 60 minutes. The default is 30 minutes.
+- **Refresh Now** (⌘R) gets the usage data immediately.
+- **Auto Refresh** sets the update interval: off, or every 5, 10, 20, 30 or 60 minutes. The default is 30 minutes.
 - The app also gets new data 10 seconds after the Mac wakes from sleep.
 - **Launch at Login** starts the app when you log in. If you turned the app off in **System Settings → General → Login Items**, the menu item opens that page, so that you can turn it on again there.
 

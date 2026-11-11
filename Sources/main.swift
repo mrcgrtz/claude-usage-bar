@@ -201,7 +201,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         let menu = NSMenu()
         for minutes in [0] + refreshOptions {
             let entry = NSMenuItem(
-                title: minutes == 0 ? "Off" : "Every \(minutes) minutes",
+                title: minutes == 0 ? "Off" : "Every \(minutes) Minutes",
                 action: #selector(selectAutoRefresh(_:)), keyEquivalent: ""
             )
             entry.target = self
@@ -278,11 +278,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         }
         menu.addItem(.separator())
 
-        let refreshItem = NSMenuItem(title: "Refresh now", action: #selector(refreshNow), keyEquivalent: "r")
+        let refreshItem = NSMenuItem(title: "Refresh Now", action: #selector(refreshNow), keyEquivalent: "r")
         refreshItem.target = self
         menu.addItem(refreshItem)
 
-        let autoItem = NSMenuItem(title: "Auto refresh", action: nil, keyEquivalent: "")
+        let autoItem = NSMenuItem(title: "Auto Refresh", action: nil, keyEquivalent: "")
         autoItem.submenu = autoRefreshMenu()
         menu.addItem(autoItem)
 
@@ -292,7 +292,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         menu.addItem(loginItem)
 
         menu.addItem(.separator())
-        menu.addItem(NSMenuItem(title: "Quit", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
+        let quit = #selector(NSApplication.terminate(_:))
+        menu.addItem(NSMenuItem(title: "Quit ClaudeUsageBar", action: quit, keyEquivalent: "q"))
     }
 }
 

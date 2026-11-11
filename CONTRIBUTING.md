@@ -32,7 +32,7 @@ The project has no Xcode project and no Swift package. `build.sh` compiles `Sour
 open ~/Applications/ClaudeUsageBar.app
 ```
 
-Quit the running app before you open a new build. Use **Quit** in the app menu, or run:
+Quit the running app before you open a new build. Use **Quit ClaudeUsageBar** in the app menu, or run:
 
 ```sh
 osascript -e 'tell application id "de.marcgoertz.ClaudeUsageBar" to quit'
