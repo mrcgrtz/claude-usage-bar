@@ -5,6 +5,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.5] - 2026-11-11
+
 ### Added
 
 - **Check for Updates Automatically**: the app checks GitHub once a day, and the menu shows **Download Version …** when a new version is available.
@@ -61,7 +63,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - README with a screenshot, and changelog.
 - SwiftLint check in GitHub Actions.
 
-[Unreleased]: https://github.com/mrcgrtz/claude-usage-bar/compare/v0.4...main
+[Unreleased]: https://github.com/mrcgrtz/claude-usage-bar/compare/v0.5...main
+[0.5]: https://github.com/mrcgrtz/claude-usage-bar/releases/tag/v0.5
 [0.4]: https://github.com/mrcgrtz/claude-usage-bar/releases/tag/v0.4
 [0.3]: https://github.com/mrcgrtz/claude-usage-bar/releases/tag/v0.3
 [0.2]: https://github.com/mrcgrtz/claude-usage-bar/releases/tag/v0.2
