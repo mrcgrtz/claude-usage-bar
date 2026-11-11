@@ -5,6 +5,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.6] - 2026-11-11
+
 ### Added
 
 - MIT License. The About window shows it.
@@ -67,7 +69,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - README with a screenshot, and changelog.
 - SwiftLint check in GitHub Actions.
 
-[Unreleased]: https://github.com/mrcgrtz/claude-usage-bar/compare/v0.5...main
+[Unreleased]: https://github.com/mrcgrtz/claude-usage-bar/compare/v0.6...main
+[0.6]: https://github.com/mrcgrtz/claude-usage-bar/releases/tag/v0.6
 [0.5]: https://github.com/mrcgrtz/claude-usage-bar/releases/tag/v0.5
 [0.4]: https://github.com/mrcgrtz/claude-usage-bar/releases/tag/v0.4
 [0.3]: https://github.com/mrcgrtz/claude-usage-bar/releases/tag/v0.3
