@@ -5,6 +5,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Added
+
+- **Check for Updates Automatically**: the app checks GitHub once a day, and the menu shows **Download Version …** when a new version is available.
+
 ### Fixed
 
 - A rule that was inactive while its limit reset runs again when the usage reaches its threshold after you turn it on.

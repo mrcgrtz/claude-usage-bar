@@ -2,3 +2,5 @@
 "ApplicationDescription" = "ClaudeUsageBar shows the usage limits of your Claude account in the menu bar.";
 "UsagePurpose" = "ClaudeUsageBar gets the usage of your Claude account from Anthropic. It sends the login token of Claude Code with the request. It connects when you click Refresh Now, at the auto refresh interval, and after the Mac wakes from sleep.";
 "UsageDenyConsequences" = "If you deny these connections, ClaudeUsageBar cannot show your usage. The menu then shows an error.";
+"UpdatesPurpose" = "ClaudeUsageBar checks GitHub once a day for a new version. You can turn this off in Settings → General.";
+"UpdatesDenyConsequences" = "If you deny these connections, ClaudeUsageBar cannot tell you about new versions.";

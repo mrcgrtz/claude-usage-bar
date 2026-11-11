@@ -28,6 +28,7 @@
 "Shortcut “%@” failed: %@" = "Kurzbefehl „%1$@“ fehlgeschlagen: %2$@";
 
 /* Menu items */
+"Download Version %@…" = "Version %@ herunterladen …";
 "Refresh Now" = "Jetzt aktualisieren";
 "Auto Refresh" = "Automatisch aktualisieren";
 "Off" = "Aus";
@@ -39,6 +40,7 @@
 /* Settings window */
 "General" = "Allgemein";
 "Launch at Login" = "Bei der Anmeldung öffnen";
+"Check for Updates Automatically" = "Automatisch nach Updates suchen";
 "Rules" = "Regeln";
 "Add Rule" = "Regel hinzufügen";
 "A rule runs once when the usage reaches its threshold. It runs again after the usage went below the threshold, for example when the limit resets. The app checks the rules at each refresh." = "Eine Regel wird einmal ausgeführt, wenn die Nutzung ihren Schwellenwert erreicht. Erneut wird sie erst ausgeführt, nachdem die Nutzung unter den Schwellenwert gefallen ist, zum Beispiel wenn das Limit zurückgesetzt wird. Die App prüft die Regeln bei jeder Aktualisierung.";

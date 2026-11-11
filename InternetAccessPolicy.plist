@@ -24,6 +24,20 @@
 			<key>DenyConsequences</key>
 			<string>UsageDenyConsequences</string>
 		</dict>
+		<dict>
+			<key>IsIncoming</key>
+			<false/>
+			<key>Host</key>
+			<string>api.github.com</string>
+			<key>NetworkProtocol</key>
+			<string>TCP</string>
+			<key>Port</key>
+			<string>443</string>
+			<key>Purpose</key>
+			<string>UpdatesPurpose</string>
+			<key>DenyConsequences</key>
+			<string>UpdatesDenyConsequences</string>
+		</dict>
 	</array>
 </dict>
 </plist>

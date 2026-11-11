@@ -18,12 +18,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, UNUser
     private let rules = RuleStore()
     private var ruleError: String?
     private var settingsWindow: NSWindow?
+    private var update: Updates.Release?
+    private var updateTimer: Timer?
 
     private var refreshMinutes: Int {
         UserDefaults.standard.object(forKey: settingsKey) as? Int ?? 30
     }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+        UserDefaults.standard.register(defaults: [Updates.enabledKey: true])
         // A fixed autosave name gives the menu bar item the same identity at each launch.
         item = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         item.autosaveName = "ClaudeUsageBar"
@@ -48,6 +51,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, UNUser
         updateTitle()
         refresh()
         setAutoRefresh(refreshMinutes)
+        startUpdateChecks()
     }
 
     // Template mode lets macOS tint the icon for light and dark menu bars.
@@ -257,6 +261,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, UNUser
         }
         menu.addItem(.separator())
 
+        if let update {
+            addAction(menu, String(localized: "Download Version \(update.version)…"), #selector(openUpdate))
+            menu.addItem(.separator())
+        }
         addAction(menu, String(localized: "Refresh Now"), #selector(refreshNow), key: "r")
         addAction(menu, String(localized: "Auto Refresh"), nil).submenu = autoRefreshMenu()
 
@@ -314,6 +322,30 @@ extension AppDelegate {
         _ center: UNUserNotificationCenter, willPresent notification: UNNotification
     ) async -> UNNotificationPresentationOptions {
         [.banner, .sound]
+    }
+
+    // MARK: Updates
+
+    private func startUpdateChecks() {
+        checkForUpdates()
+        updateTimer = Timer.scheduledTimer(withTimeInterval: 24 * 60 * 60, repeats: true) { [weak self] _ in
+            MainActor.assumeIsolated { self?.checkForUpdates() }
+        }
+    }
+
+    private func checkForUpdates() {
+        guard UserDefaults.standard.bool(forKey: Updates.enabledKey) else {
+            update = nil
+            return
+        }
+        let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "0"
+        Task { update = await Updates.newerRelease(than: version) }
+    }
+
+    @objc private func openUpdate() {
+        if let update {
+            NSWorkspace.shared.open(update.html_url)
+        }
     }
 
     // MARK: Settings

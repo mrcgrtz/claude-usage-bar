@@ -34,6 +34,7 @@ enum SettingsWindow {
 
 private struct GeneralPane: View {
     @State private var launchAtLogin = SMAppService.mainApp.status == .enabled
+    @AppStorage(Updates.enabledKey) private var checkForUpdates = true
 
     var body: some View {
         Form {
@@ -44,6 +45,7 @@ private struct GeneralPane: View {
                     launchAtLogin = SMAppService.mainApp.status == .enabled
                 }
             ))
+            Toggle("Check for Updates Automatically", isOn: $checkForUpdates)
         }
         .padding(20)
         .frame(width: 640, alignment: .leading)

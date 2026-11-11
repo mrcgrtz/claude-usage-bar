@@ -51,8 +51,14 @@ To use a custom menu bar icon, put a `claude-icon.png` file in the repository ro
 - **Refresh Now** (⌘R) gets the usage data immediately.
 - **Auto Refresh** sets the update interval: off, or every 5, 10, 20, 30 or 60 minutes. The default is 30 minutes.
 - The app also gets new data 10 seconds after the Mac wakes from sleep.
-- **Settings…** (⌘,) opens the settings. **General** has **Launch at Login**, and **Rules** has the rules. If you turned the app off in **System Settings → General → Login Items**, **Launch at Login** opens that page, so that you can turn it on again there.
+- **Settings…** (⌘,) opens the settings, with the panes **General** and **Rules**.
+- **Download Version …** shows when a new version is available. It opens the release on GitHub.
 - **About ClaudeUsageBar** shows the version and a link to the website of the developer.
+
+The **General** pane has these settings:
+
+- **Launch at Login** starts the app when you log in. If you turned the app off in **System Settings → General → Login Items**, it opens that page, so that you can turn it on again there.
+- **Check for Updates Automatically** checks GitHub once a day for a new version. The app does not install updates itself: download the new DMG and drag the app to the `Applications` folder again.
 
 ## Rules
 
