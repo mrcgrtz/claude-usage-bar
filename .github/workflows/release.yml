@@ -1,4 +1,4 @@
-# Builds the DMG and makes a GitHub release when a version tag such as v0.2 is pushed.
+# Builds the DMG and makes a GitHub release when a version tag such as v0.4 is pushed.
 
 name: Release
 

@@ -93,12 +93,12 @@ If the shortcut menu of a rule shows only **None**, close the rule with **Cancel
 
 GitHub builds the release when you push a version tag:
 
-1. Change `CFBundleShortVersionString` in `Info.plist` and move the **Unreleased** entries in `CHANGELOG.md` to the new version.
+1. In `Info.plist`, change `CFBundleShortVersionString` to the new version and add 1 to `CFBundleVersion`. In `CHANGELOG.md`, move the **Unreleased** entries to the new version.
 2. Commit the change on `main`, then tag and push it:
 
    ```sh
-   git tag v0.2
-   git push origin main v0.2
+   git tag v0.4
+   git push origin main v0.4
    ```
 
 The release workflow checks that the tag matches the version in `Info.plist`, runs `./build.sh --dmg` and makes a GitHub release with the DMG. The release notes are the section of the version in `CHANGELOG.md`.

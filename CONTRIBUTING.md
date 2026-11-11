@@ -85,4 +85,4 @@ If you change a text in the code, also change its key in the German file. Otherw
 
 ## Release
 
-The README has the release steps. In short: change the version in `Info.plist`, move the **Unreleased** entries in `CHANGELOG.md` to the new version, commit, and push a version tag such as `v0.2`. GitHub then builds the DMG and makes the release.
+The README has the release steps. In short: change the version in `Info.plist`, move the **Unreleased** entries in `CHANGELOG.md` to the new version, commit, and push a version tag such as `v0.4`. GitHub then builds the DMG and makes the release.
