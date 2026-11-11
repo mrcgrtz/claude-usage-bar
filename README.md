@@ -4,7 +4,7 @@ ClaudeUsageBar is a macOS menu bar app. It shows how much of your Claude plan li
 
 ![ClaudeUsageBar menu with the 5-hour, weekly and extra usage](docs/screenshot.png)
 
-The menu bar shows two values: the 5-hour limit and the weekly limit, for example `42% · 18%`.
+The menu bar shows two values: the 5-hour limit and the weekly limit, for example `42% · 18%`, or `42 % · 18 %` in German.
 
 The menu shows:
 
@@ -12,6 +12,8 @@ The menu shows:
 - The extra usage and its cap, if extra usage is on.
 - The time of the last update.
 - An error message, if the last update failed. The menu bar then shows a warning triangle instead of the gauge.
+
+[Rules](#rules) can show a notification or run a shortcut when a limit reaches a threshold.
 
 The app is in English and German. It uses the language, time format and number format of your Mac.
 
@@ -28,7 +30,7 @@ The app is in English and German. It uses the language, time format and number f
 3. Open the app. The app is not notarised, thus macOS blocks it the first time. Go to **System Settings → Privacy & Security** and click **Open Anyway**.
 4. When macOS asks for access to the `Claude Code-credentials` Keychain item, click **Always Allow**.
 
-To start the app when you log in, turn on **Launch at Login** in its menu.
+To start the app when you log in, turn on **Launch at Login** in **Settings…**.
 
 ## Build
 
@@ -49,8 +51,31 @@ To use a custom menu bar icon, put a `claude-icon.png` file in the repository ro
 - **Refresh Now** (⌘R) gets the usage data immediately.
 - **Auto Refresh** sets the update interval: off, or every 5, 10, 20, 30 or 60 minutes. The default is 30 minutes.
 - The app also gets new data 10 seconds after the Mac wakes from sleep.
-- **Launch at Login** starts the app when you log in. If you turned the app off in **System Settings → General → Login Items**, the menu item opens that page, so that you can turn it on again there.
+- **Settings…** (⌘,) opens the settings. **General** has **Launch at Login**, and **Rules** has the rules. If you turned the app off in **System Settings → General → Login Items**, **Launch at Login** opens that page, so that you can turn it on again there.
 - **About ClaudeUsageBar** shows the version and a link to the website of the developer.
+
+## Rules
+
+A rule does something when the usage of a limit reaches a threshold. For example, it can show a notification when the weekly usage reaches 80 %, or run a shortcut that turns on a Focus when the 5-hour usage reaches 95 %.
+
+To add a rule, open **Settings…**, choose **Rules** and click **Add Rule**. To change a rule, double-click it or select it and click **Edit**. **Duplicate** copies the selected rule, and **Remove** (or the Delete key) removes it. Turn off **Active** to keep a rule without running it.
+
+Each rule has:
+
+- **Limit**: the 5-hour limit, the weekly limit or the extra usage. For the extra usage, the percentage is the amount that you spent of your cap.
+- **Threshold**: the percentage, from 5 % to 100 %.
+- **Show Notification**: shows a macOS notification. The first time, macOS asks if ClaudeUsageBar can send notifications.
+- **Run Shortcut**: runs one of your shortcuts from the Shortcuts app.
+
+A rule runs once when the usage reaches its threshold. It runs again only after the usage went below the threshold, for example when the limit resets. The app checks the rules each time that it gets new data, so a rule can run up to one auto refresh interval late.
+
+The shortcut gets a JSON file as its input, for example:
+
+```json
+{"limit": "weekly_all", "percent": 82, "threshold": 80, "resetsAt": "2026-11-14T22:20:00Z"}
+```
+
+`limit` is `session` (5-hour), `weekly_all` (weekly) or `extra` (extra usage). To use the values in the shortcut, add the **Get Dictionary from Input** action. If a shortcut or a notification fails, the menu shows the error.
 
 ## Troubleshooting
 
@@ -59,6 +84,10 @@ To use a custom menu bar icon, put a `claude-icon.png` file in the repository ro
 | Claude Code Keychain credentials unavailable | The app cannot read the Keychain item. | Log in to Claude Code. Make sure that you allowed Keychain access. |
 | Token expired - run claude to refresh it | The OAuth token is not valid anymore. | Run `claude` once. Claude Code then gets a new token. |
 | Usage API returned HTTP … | The usage API sent an error. | Try again later. |
+| Notifications are off for ClaudeUsageBar. … | A rule tried to show a notification, but notifications are off. | Turn on notifications for ClaudeUsageBar in **System Settings → Notifications**. |
+| Shortcut “…” failed: … | A rule could not run its shortcut, for example because you deleted or renamed it. | Edit the rule and choose the shortcut again. Run the shortcut in the Shortcuts app to see its own errors. |
+
+If the shortcut menu of a rule shows only **None**, close the rule with **Cancel** and open it again. The app loads your shortcuts when the rule opens, which can take a second.
 
 ## Release
 

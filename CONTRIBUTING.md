@@ -13,7 +13,10 @@ This file tells you how to change ClaudeUsageBar. For what the app does and how 
 
 | Path | Contents |
 | --- | --- |
-| `Sources/main.swift` | All of the app code. |
+| `Sources/main.swift` | The menu bar item, the menu and the requests to the usage API. |
+| `Sources/Usage.swift` | The data of the usage API. |
+| `Sources/Rules.swift` | The rules, and how the app runs shortcuts and shows notifications. |
+| `Sources/Settings.swift` | The Settings window, and **Launch at Login**. |
 | `Info.plist` | The bundle identifier, the version and the menu bar app settings. |
 | `InternetAccessPolicy.plist` | The [Internet Access Policy](https://www.obdev.at/iap/), which tells firewalls such as Little Snitch which connections the app makes and why. Update it when the app connects to a new host. Its texts are in `Resources/*.lproj/InternetAccessPolicy.strings`. |
 | `Resources/de.lproj/Localizable.strings` | The German texts of the app. |
@@ -24,7 +27,7 @@ This file tells you how to change ClaudeUsageBar. For what the app does and how 
 | `.github/workflows/release.yml` | Builds the DMG and makes the GitHub release for a version tag. |
 | `CHANGELOG.md` | The changes in each release. |
 
-The project has no Xcode project and no Swift package. `build.sh` compiles `Sources/main.swift` with `swiftc`.
+The project has no Xcode project and no Swift package. `build.sh` compiles the files in `Sources` with `swiftc`.
 
 ## Build and run
 

@@ -12,7 +12,7 @@ mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 # A universal binary runs natively on Intel Macs and Macs with Apple silicon.
 for ARCH in x86_64 arm64; do
   xcrun swiftc -O -swift-version 6 -target "$ARCH-apple-macos14" \
-    Sources/main.swift -o "build/ClaudeUsageBar-$ARCH"
+    Sources/*.swift -o "build/ClaudeUsageBar-$ARCH"
 done
 lipo -create build/ClaudeUsageBar-x86_64 build/ClaudeUsageBar-arm64 \
   -output "$APP/Contents/MacOS/ClaudeUsageBar"

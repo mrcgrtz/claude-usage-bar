@@ -12,6 +12,7 @@
 "unknown" = "unbekannt";
 "%@: %@ used, resets %@" = "%1$@: %2$@ genutzt, Reset %3$@";
 "Extra usage: %@ / %@" = "Zusatznutzung: %1$@ / %2$@";
+"Extra usage" = "Zusatznutzung";
 "Updated: %@" = "Aktualisiert: %@";
 
 /* Errors */
@@ -21,12 +22,42 @@
 "Invalid usage response" = "Ungültige Antwort der Nutzungs-API";
 "Usage API request failed: %@" = "Anfrage an die Nutzungs-API fehlgeschlagen: %@";
 "Launch at Login could not be changed." = "„Bei der Anmeldung öffnen“ konnte nicht geändert werden.";
+"Notifications are off for ClaudeUsageBar. Turn them on in System Settings → Notifications." = "Mitteilungen für ClaudeUsageBar sind aus. Schalte sie in den Systemeinstellungen unter „Mitteilungen“ ein.";
+"Shortcut “%@” failed: %@" = "Kurzbefehl „%1$@“ fehlgeschlagen: %2$@";
 
 /* Menu items */
 "Refresh Now" = "Jetzt aktualisieren";
 "Auto Refresh" = "Automatisch aktualisieren";
 "Off" = "Aus";
 "Every %lld Minutes" = "Alle %lld Minuten";
-"Launch at Login" = "Bei der Anmeldung öffnen";
+"Settings…" = "Einstellungen …";
 "About ClaudeUsageBar" = "Über ClaudeUsageBar";
 "Quit ClaudeUsageBar" = "ClaudeUsageBar beenden";
+
+/* Settings window */
+"General" = "Allgemein";
+"Launch at Login" = "Bei der Anmeldung öffnen";
+"Rules" = "Regeln";
+"Add Rule" = "Regel hinzufügen";
+"A rule runs once when the usage reaches its threshold. It runs again after the usage went below the threshold, for example when the limit resets. The app checks the rules at each refresh." = "Eine Regel wird einmal ausgeführt, wenn die Nutzung ihren Schwellenwert erreicht. Erneut wird sie erst ausgeführt, nachdem die Nutzung unter den Schwellenwert gefallen ist, zum Beispiel wenn das Limit zurückgesetzt wird. Die App prüft die Regeln bei jeder Aktualisierung.";
+"Active" = "Aktiv";
+"Description" = "Beschreibung";
+"Edit" = "Bearbeiten";
+"Duplicate" = "Duplizieren";
+"Remove" = "Entfernen";
+"%@ at %@ – %@" = "%1$@ bei %2$@ – %3$@";
+"Notification" = "Mitteilung";
+"Shortcut “%@”" = "Kurzbefehl „%@“";
+"No action" = "Keine Aktion";
+
+/* Sheet for a rule */
+"Limit:" = "Limit:";
+"Threshold:" = "Schwellenwert:";
+"Show Notification" = "Mitteilung anzeigen";
+"Run Shortcut:" = "Kurzbefehl ausführen:";
+"None" = "Keiner";
+"Cancel" = "Abbrechen";
+"OK" = "OK";
+
+/* Notifications */
+"%@: %@ reached" = "%1$@: %2$@ erreicht";

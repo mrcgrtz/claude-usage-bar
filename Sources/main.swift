@@ -1,43 +1,11 @@
 import AppKit
-import ServiceManagement
-
-// MARK: - Usage API model
-
-struct Usage: Decodable {
-    let limits: [Limit]
-    let spend: Spend?
-
-    struct Limit: Decodable {
-        let kind: String
-        let percent: Double?
-        let resets_at: String?
-    }
-
-    struct Spend: Decodable {
-        let enabled: Bool?
-        let used: Money?
-        let limit: Money?
-    }
-
-    struct Money: Decodable {
-        let amount_minor: Double
-        let exponent: Int
-        let currency: String?
-
-        var formatted: String {
-            let amount = amount_minor / pow(10, Double(exponent))
-            guard let currency else {
-                return amount.formatted(.number.precision(.fractionLength(exponent)))
-            }
-            return amount.formatted(.currency(code: currency).precision(.fractionLength(exponent)))
-        }
-    }
-}
+import SwiftUI
+import UserNotifications
 
 // MARK: - App
 
 @MainActor
-final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
+final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, UNUserNotificationCenterDelegate {
     private let settingsKey = "refreshMinutes"
     private let refreshOptions = [5, 10, 20, 30, 60]
     private let labels = ["session": String(localized: "5-hour"), "weekly_all": String(localized: "Weekly")]
@@ -48,6 +16,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     private var lastUpdated: String?
     private var inFlight = false
     private var timer: Timer?
+    private let rules = RuleStore()
+    private var ruleError: String?
+    private var settingsWindow: NSWindow?
 
     private var refreshMinutes: Int {
         UserDefaults.standard.object(forKey: settingsKey) as? Int ?? 30
@@ -61,6 +32,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         let menu = NSMenu()
         menu.delegate = self
         item.menu = menu
+        UNUserNotificationCenter.current().delegate = self
 
         NSWorkspace.shared.notificationCenter.addObserver(
             forName: NSWorkspace.didWakeNotification, object: nil, queue: .main
@@ -100,7 +72,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     private func used(_ limit: Usage.Limit?) -> String {
         guard let percent = limit?.percent else { return String(localized: "N/A") }
-        return (percent / 100).formatted(.percent.precision(.fractionLength(0)))
+        return percent.percentText
     }
 
     private func updateTitle() {
@@ -123,6 +95,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         if let data {
             usage = data
             lastUpdated = Date().formatted(date: .omitted, time: .shortened)
+            runRules(data)
         }
         updateTitle()
     }
@@ -215,29 +188,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         return menu
     }
 
-    // MARK: Launch at login
-
-    @objc private func toggleLaunchAtLogin() {
-        let service = SMAppService.mainApp
-        do {
-            if service.status == .enabled {
-                try service.unregister()
-            } else {
-                try service.register()
-            }
-        } catch where service.status != .requiresApproval {
-            NSApp.activate()
-            let alert = NSAlert()
-            alert.messageText = String(localized: "Launch at Login could not be changed.")
-            alert.informativeText = error.localizedDescription
-            alert.runModal()
-        } catch {}
-        // When the user turned the app off in Login Items, only System Settings can turn it on again.
-        if service.status == .requiresApproval {
-            SMAppService.openSystemSettingsLoginItems()
-        }
-    }
-
     // MARK: About
 
     // The app has no windows of its own, so it must come to the front for the About window.
@@ -303,18 +253,79 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         if let errorMessage {
             addInfo(menu, errorMessage)
         }
+        if let ruleError {
+            addInfo(menu, ruleError)
+        }
         menu.addItem(.separator())
 
         addAction(menu, String(localized: "Refresh Now"), #selector(refreshNow), key: "r")
         addAction(menu, String(localized: "Auto Refresh"), nil).submenu = autoRefreshMenu()
-        addAction(menu, String(localized: "Launch at Login"), #selector(toggleLaunchAtLogin)).state =
-            SMAppService.mainApp.status == .enabled ? .on : .off
 
         menu.addItem(.separator())
+        addAction(menu, String(localized: "Settings…"), #selector(showSettings), key: ",")
         addAction(menu, String(localized: "About ClaudeUsageBar"), #selector(showAbout))
         // Quit goes to NSApplication, not to this delegate.
         let quit = #selector(NSApplication.terminate(_:))
         menu.addItem(NSMenuItem(title: String(localized: "Quit ClaudeUsageBar"), action: quit, keyEquivalent: "q"))
+    }
+}
+
+// MARK: - Rules and settings
+
+extension AppDelegate {
+    // MARK: Rules
+
+    private func runRules(_ usage: Usage) {
+        for (rule, percent) in rules.check(usage) {
+            Task { await runActions(rule, percent: percent, usage: usage) }
+        }
+    }
+
+    private func runActions(_ rule: Rule, percent: Double, usage: Usage) async {
+        var errors: [String] = []
+        if rule.notify {
+            let title = String(localized: "\(rule.limit.name): \(Double(rule.threshold).percentText) reached")
+            if let error = await Notifications.post(title: title, body: summary(rule.limit, usage)) {
+                errors.append(error)
+            }
+        }
+        if let shortcut = rule.shortcut {
+            let resetsAt = usage.limits.first { $0.kind == rule.limit.rawValue }?.resets_at
+            let input = RuleInput(
+                limit: rule.limit.rawValue, percent: percent, threshold: rule.threshold, resetsAt: resetsAt
+            )
+            if let error = await Shortcuts.run(shortcut, input: input) {
+                errors.append(String(localized: "Shortcut “\(shortcut.name)” failed: \(error)"))
+            }
+        }
+        ruleError = errors.isEmpty ? nil : errors.joined(separator: "\n")
+    }
+
+    /// The same text as the row of the limit in the menu.
+    private func summary(_ limit: Rule.Limit, _ usage: Usage) -> String {
+        if limit == .extra, let spent = usage.spend?.used, let cap = usage.spend?.limit {
+            return String(localized: "Extra usage: \(spent.formatted) / \(cap.formatted)")
+        }
+        let entry = usage.limits.first { $0.kind == limit.rawValue }
+        return String(localized: "\(limit.name): \(used(entry)) used, resets \(resetTime(entry?.resets_at))")
+    }
+
+    // Without this, macOS hides notifications while the app is in front, for example with the Settings window open.
+    nonisolated func userNotificationCenter(
+        _ center: UNUserNotificationCenter, willPresent notification: UNNotification
+    ) async -> UNNotificationPresentationOptions {
+        [.banner, .sound]
+    }
+
+    // MARK: Settings
+
+    @objc private func showSettings() {
+        if settingsWindow == nil {
+            settingsWindow = SettingsWindow.make(store: rules)
+            settingsWindow?.center()
+        }
+        NSApp.activate()
+        settingsWindow?.makeKeyAndOrderFront(nil)
     }
 }
 

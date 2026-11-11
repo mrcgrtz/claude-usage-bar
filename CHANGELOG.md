@@ -5,6 +5,15 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Added
+
+- Rules: show a notification or run a shortcut when the 5-hour, weekly or extra usage reaches a threshold.
+- **Settings…** window for the rules and **Launch at Login**.
+
+### Changed
+
+- **Launch at Login** moved from the menu to the Settings window.
+
 ## [0.3] - 2026-11-11
 
 ### Added
