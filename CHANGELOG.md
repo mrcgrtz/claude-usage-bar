@@ -8,6 +8,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Added
 
 - **Check for Updates Automatically**: the app checks GitHub once a day, and the menu shows **Download Version …** when a new version is available.
+- **Menu Bar** setting to choose the limits in the menu bar, and **Show** to show the percentage that is left.
+- Rules can use the weekly limit of a single model.
 
 ### Fixed
 

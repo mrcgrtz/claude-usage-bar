@@ -4,7 +4,7 @@ ClaudeUsageBar is a macOS menu bar app. It shows how much of your Claude plan li
 
 <img src="docs/screenshot.png" width="410" alt="ClaudeUsageBar menu with the 5-hour and weekly usage">
 
-The menu bar shows two values: the 5-hour limit and the weekly limit, for example `42% · 18%`, or `42 % · 18 %` in German.
+By default, the menu bar shows two values: the 5-hour limit and the weekly limit, for example `42% · 18%`, or `42 % · 18 %` in German. In **Settings… → General**, you can choose other limits, and the percentage that is left instead of the percentage that you used.
 
 The menu shows:
 
@@ -55,10 +55,15 @@ To use a custom menu bar icon, put a `claude-icon.png` file in the repository ro
 - **Download Version …** shows when a new version is available. It opens the release on GitHub.
 - **About ClaudeUsageBar** shows the version and a link to the website of the developer.
 
-The **General** pane has these settings:
+The **General** pane has two groups. **Startup and Updates** has:
 
 - **Launch at Login** starts the app when you log in. If you turned the app off in **System Settings → General → Login Items**, it opens that page, so that you can turn it on again there.
 - **Check for Updates Automatically** checks GitHub once a day for a new version. The app does not install updates itself: download the new DMG and drag the app to the `Applications` folder again.
+
+**Menu Bar** has:
+
+- **Limits** chooses the limits in the menu bar: 5-hour, weekly, the weekly limit of a single model, and extra usage. A limit without data, for example extra usage when it is off, does not show.
+- **Show** chooses between the percentage that you used and the percentage that is left.
 
 ## Rules
 
@@ -70,7 +75,7 @@ To add a rule, open **Settings…**, choose **Rules** and click **Add Rule**. To
 
 Each rule has:
 
-- **Limit**: the 5-hour limit, the weekly limit or the extra usage. For the extra usage, the percentage is the amount that you spent of your cap.
+- **Limit**: the 5-hour limit, the weekly limit, the weekly limit of a single model (for example Fable) or the extra usage. For the extra usage, the percentage is the amount that you spent of your cap.
 - **Threshold**: the percentage, from 5 % to 100 %.
 - **Show Notification**: shows a macOS notification. The first time, macOS asks if ClaudeUsageBar can send notifications.
 - **Run Shortcut**: runs one of your shortcuts from the Shortcuts app.
@@ -83,7 +88,7 @@ The shortcut gets a JSON file as its input, for example:
 {"limit": "weekly_all", "percent": 82, "threshold": 80, "resetsAt": "2026-11-14T22:20:00Z"}
 ```
 
-`limit` is `session` (5-hour), `weekly_all` (weekly) or `extra` (extra usage). To use the values in the shortcut, add the **Get Dictionary from Input** action. If a shortcut or a notification fails, the menu shows the error.
+`limit` is `session` (5-hour), `weekly_all` (weekly), `weekly_scoped` (weekly, single model) or `extra` (extra usage). To use the values in the shortcut, add the **Get Dictionary from Input** action. If a shortcut or a notification fails, the menu shows the error.
 
 ## Troubleshooting
 

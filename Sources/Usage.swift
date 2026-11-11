@@ -68,7 +68,7 @@ struct Usage: Decodable {
     /// The used percentage of a limit, or nil when the API did not send it.
     func percent(_ limit: Rule.Limit) -> Double? {
         switch limit {
-        case .session, .weekly:
+        case .session, .weekly, .weeklyScoped:
             return limits.first { $0.kind == limit.rawValue }?.percent
         case .extra:
             guard let spend, spend.enabled == true, let used = spend.used, let cap = spend.limit, cap.amount > 0 else {

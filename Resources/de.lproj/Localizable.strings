@@ -3,13 +3,15 @@
 /* Menu bar */
 "Claude usage" = "Claude-Nutzung";
 "Error" = "Fehler";
-"Claude usage: 5-hour · weekly" = "Claude-Nutzung: 5 Stunden · Woche";
+"Claude usage: %@" = "Claude-Nutzung: %@";
+"Claude usage left: %@" = "Verbleibende Claude-Nutzung: %@";
 
 /* Limits */
 "5-hour" = "5 Stunden";
 "Weekly" = "Woche";
 "Weekly (%@)" = "Woche (%@)";
 "Weekly (scoped)" = "Woche (eingeschränkt)";
+"Weekly (single model)" = "Woche (einzelnes Modell)";
 "N/A" = "k. A.";
 "unknown" = "unbekannt";
 "%@: %@ used, resets %@" = "%1$@: %2$@ genutzt, Reset %3$@";
@@ -41,6 +43,12 @@
 "General" = "Allgemein";
 "Launch at Login" = "Bei der Anmeldung öffnen";
 "Check for Updates Automatically" = "Automatisch nach Updates suchen";
+"Startup and Updates" = "Start und Updates";
+"Menu Bar" = "Menüleiste";
+"Limits" = "Limits";
+"Show" = "Anzeigen";
+"Percent Used" = "Genutzter Anteil";
+"Percent Left" = "Verbleibender Anteil";
 "Rules" = "Regeln";
 "Add Rule" = "Regel hinzufügen";
 "A rule runs once when the usage reaches its threshold. It runs again after the usage went below the threshold, for example when the limit resets. The app checks the rules at each refresh." = "Eine Regel wird einmal ausgeführt, wenn die Nutzung ihren Schwellenwert erreicht. Erneut wird sie erst ausgeführt, nachdem die Nutzung unter den Schwellenwert gefallen ist, zum Beispiel wenn das Limit zurückgesetzt wird. Die App prüft die Regeln bei jeder Aktualisierung.";

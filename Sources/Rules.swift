@@ -5,9 +5,12 @@ import UserNotifications
 
 /// A rule shows a notification or runs a shortcut when the usage of a limit reaches a threshold.
 struct Rule: Codable, Identifiable, Equatable {
+    /// The limits that rules and the menu bar can use.
     enum Limit: String, Codable, CaseIterable, Identifiable {
         case session
         case weekly = "weekly_all"
+        /// The weekly limit of one model. The menu shows the name of the model, for example "Weekly (Fable)".
+        case weeklyScoped = "weekly_scoped"
         case extra
 
         var id: Self { self }
@@ -16,6 +19,7 @@ struct Rule: Codable, Identifiable, Equatable {
             switch self {
             case .session: String(localized: "5-hour")
             case .weekly: String(localized: "Weekly")
+            case .weeklyScoped: String(localized: "Weekly (single model)")
             case .extra: String(localized: "Extra usage")
             }
         }

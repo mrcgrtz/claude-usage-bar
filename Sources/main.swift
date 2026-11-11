@@ -26,7 +26,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, UNUser
     }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
-        UserDefaults.standard.register(defaults: [Updates.enabledKey: true])
+        MenuBar.registerDefaults()
         // A fixed autosave name gives the menu bar item the same identity at each launch.
         item = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         item.autosaveName = "ClaudeUsageBar"
@@ -46,6 +46,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, UNUser
                     MainActor.assumeIsolated { self.refresh() }
                 }
             }
+        }
+
+        // The settings change the menu bar, so the title updates when a setting changes.
+        NotificationCenter.default.addObserver(
+            forName: UserDefaults.didChangeNotification, object: nil, queue: .main
+        ) { [weak self] _ in
+            MainActor.assumeIsolated { self?.updateTitle() }
         }
 
         updateTitle()
@@ -69,10 +76,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, UNUser
 
     // MARK: Title
 
-    private func limit(_ kind: String) -> Usage.Limit? {
-        usage?.limits.first { $0.kind == kind }
-    }
-
     private func used(_ limit: Usage.Limit?) -> String {
         guard let percent = limit?.percent else { return String(localized: "N/A") }
         return percent.percentText
@@ -80,14 +83,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, UNUser
 
     private func updateTitle() {
         let title: String
-        if usage != nil {
-            title = " \(used(limit("session"))) · \(used(limit("weekly_all")))"
+        if let usage {
+            let values = MenuBar.title(usage)
+            title = values.isEmpty ? "" : " " + values
         } else {
             title = errorMessage != nil ? "" : " …"
         }
         item.button?.image = Self.icon(warning: errorMessage != nil)
         item.button?.title = title
-        item.button?.toolTip = errorMessage ?? String(localized: "Claude usage: 5-hour · weekly")
+        item.button?.toolTip = errorMessage ?? MenuBar.toolTip()
     }
 
     // MARK: Fetch
@@ -291,7 +295,8 @@ extension AppDelegate {
     private func runActions(_ rule: Rule, percent: Double, usage: Usage) async {
         var errors: [String] = []
         if rule.notify {
-            let title = String(localized: "\(rule.limit.name): \(Double(rule.threshold).percentText) reached")
+            let name = usage.limits.first { $0.kind == rule.limit.rawValue }?.label ?? rule.limit.name
+            let title = String(localized: "\(name): \(Double(rule.threshold).percentText) reached")
             if let error = await Notifications.post(title: title, body: summary(rule.limit, usage)) {
                 errors.append(error)
             }
@@ -314,7 +319,8 @@ extension AppDelegate {
             return String(localized: "Extra usage: \(spent.formatted) / \(cap.formatted)")
         }
         let entry = usage.limits.first { $0.kind == limit.rawValue }
-        return String(localized: "\(limit.name): \(used(entry)) used, resets \(resetTime(entry?.resets_at))")
+        let name = entry?.label ?? limit.name
+        return String(localized: "\(name): \(used(entry)) used, resets \(resetTime(entry?.resets_at))")
     }
 
     // Without this, macOS hides notifications while the app is in front, for example with the Settings window open.

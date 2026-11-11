@@ -17,6 +17,7 @@ This file tells you how to change ClaudeUsageBar. For what the app does and how 
 | `Sources/Usage.swift` | The data of the usage API. |
 | `Sources/Rules.swift` | The rules, and how the app runs shortcuts and shows notifications. |
 | `Sources/Settings.swift` | The Settings window, and **Launch at Login**. |
+| `Sources/MenuBar.swift` | Which values the menu bar shows. |
 | `Sources/Updates.swift` | The daily check for a new release on GitHub. |
 | `Info.plist` | The bundle identifier, the version and the menu bar app settings. |
 | `InternetAccessPolicy.plist` | The [Internet Access Policy](https://www.obdev.at/iap/), which tells firewalls such as Little Snitch which connections the app makes and why. Update it when the app connects to a new host. Its texts are in `Resources/*.lproj/InternetAccessPolicy.strings`. |

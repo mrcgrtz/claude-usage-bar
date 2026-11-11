@@ -35,21 +35,66 @@ enum SettingsWindow {
 private struct GeneralPane: View {
     @State private var launchAtLogin = SMAppService.mainApp.status == .enabled
     @AppStorage(Updates.enabledKey) private var checkForUpdates = true
+    @AppStorage(MenuBar.showsLeftKey) private var showsLeft = false
 
     var body: some View {
-        Form {
-            Toggle("Launch at Login", isOn: Binding(
-                get: { launchAtLogin },
-                set: { enabled in
-                    LaunchAtLogin.set(enabled)
-                    launchAtLogin = SMAppService.mainApp.status == .enabled
+        // Group boxes with a title, as in the settings of other Mac apps.
+        VStack(alignment: .leading, spacing: 16) {
+            GroupBox("Startup and Updates") {
+                VStack(alignment: .leading, spacing: 8) {
+                    Toggle("Launch at Login", isOn: Binding(
+                        get: { launchAtLogin },
+                        set: { enabled in
+                            LaunchAtLogin.set(enabled)
+                            launchAtLogin = SMAppService.mainApp.status == .enabled
+                        }
+                    ))
+                    Toggle("Check for Updates Automatically", isOn: $checkForUpdates)
                 }
-            ))
-            Toggle("Check for Updates Automatically", isOn: $checkForUpdates)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(8)
+            }
+
+            GroupBox("Menu Bar") {
+                Grid(alignment: .leadingFirstTextBaseline, horizontalSpacing: 16, verticalSpacing: 12) {
+                    GridRow {
+                        Text("Limits")
+                        VStack(alignment: .leading, spacing: 6) {
+                            ForEach(Rule.Limit.allCases) { MenuBarToggle(limit: $0) }
+                        }
+                    }
+                    GridRow {
+                        Text("Show")
+                        Picker("Show", selection: $showsLeft) {
+                            Text("Percent Used").tag(false)
+                            Text("Percent Left").tag(true)
+                        }
+                        .pickerStyle(.radioGroup)
+                        .labelsHidden()
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(8)
+            }
         }
         .padding(20)
         .frame(width: 640, alignment: .leading)
         .onAppear { launchAtLogin = SMAppService.mainApp.status == .enabled }
+    }
+}
+
+/// A checkbox that adds a limit to the menu bar.
+private struct MenuBarToggle: View {
+    let limit: Rule.Limit
+    @AppStorage private var isOn: Bool
+
+    init(limit: Rule.Limit) {
+        self.limit = limit
+        _isOn = AppStorage(wrappedValue: limit == .session || limit == .weekly, MenuBar.key(limit))
+    }
+
+    var body: some View {
+        Toggle(limit.name, isOn: $isOn)
     }
 }
 
