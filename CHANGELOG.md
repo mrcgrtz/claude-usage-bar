@@ -8,6 +8,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Added
 
 - **Launch at Login** menu item.
+- **About ClaudeUsageBar** menu item, which shows the version and a link to marcgoertz.de.
 
 ### Changed
 

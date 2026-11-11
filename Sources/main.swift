@@ -235,6 +235,22 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         }
     }
 
+    // MARK: About
+
+    // The app has no windows of its own, so it must come to the front for the About window.
+    @objc private func showAbout() {
+        NSApp.activate()
+        // The credits show below the copyright, as a link to the website of the developer.
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.alignment = .center
+        let credits = NSAttributedString(string: "marcgoertz.de", attributes: [
+            .link: URL(string: "https://marcgoertz.de")!,
+            .font: NSFont.systemFont(ofSize: NSFont.smallSystemFontSize),
+            .paragraphStyle: paragraph
+        ])
+        NSApp.orderFrontStandardAboutPanel(options: [.credits: credits])
+    }
+
     // MARK: Menu
 
     private static let isoParsers: [ISO8601DateFormatter] = {
@@ -292,6 +308,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         menu.addItem(loginItem)
 
         menu.addItem(.separator())
+        let aboutItem = NSMenuItem(title: "About ClaudeUsageBar", action: #selector(showAbout), keyEquivalent: "")
+        aboutItem.target = self
+        menu.addItem(aboutItem)
         let quit = #selector(NSApplication.terminate(_:))
         menu.addItem(NSMenuItem(title: "Quit ClaudeUsageBar", action: quit, keyEquivalent: "q"))
     }
