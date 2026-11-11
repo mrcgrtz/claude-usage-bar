@@ -76,12 +76,14 @@ final class RuleStore: ObservableObject {
     /// and again only after the usage went below the threshold, for example when the limit resets.
     func check(_ usage: Usage) -> [(rule: Rule, percent: Double)] {
         var due: [(rule: Rule, percent: Double)] = []
-        for rule in rules where rule.isEnabled {
+        for rule in rules {
             guard let percent = usage.percent(rule.limit) else { continue }
             let key = Self.key(rule)
+            // An inactive rule does not run, but it still sees the usage go below its threshold.
+            // Otherwise it would not run after the user turns it on again.
             if percent < Double(rule.threshold) {
                 fired.remove(key)
-            } else if fired.insert(key).inserted {
+            } else if rule.isEnabled, fired.insert(key).inserted {
                 due.append((rule, percent))
             }
         }

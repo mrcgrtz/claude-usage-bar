@@ -5,6 +5,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Fixed
+
+- A rule that was inactive while its limit reset runs again when the usage reaches its threshold after you turn it on.
+
 ## [0.4] - 2026-11-11
 
 ### Added
