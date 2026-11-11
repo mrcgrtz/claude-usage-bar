@@ -1,0 +1,32 @@
+/* German texts of the app. The keys are the English texts in Sources/main.swift. */
+
+/* Menu bar */
+"Claude usage" = "Claude-Nutzung";
+"Error" = "Fehler";
+"Claude usage: 5-hour · weekly" = "Claude-Nutzung: 5 Stunden · Woche";
+
+/* Limits */
+"5-hour" = "5 Stunden";
+"Weekly" = "Woche";
+"N/A" = "k. A.";
+"unknown" = "unbekannt";
+"%@: %@ used, resets %@" = "%1$@: %2$@ genutzt, Reset %3$@";
+"Extra usage: %@ / %@" = "Zusatznutzung: %1$@ / %2$@";
+"Updated: %@" = "Aktualisiert: %@";
+
+/* Errors */
+"Claude Code Keychain credentials unavailable" = "Zugangsdaten von Claude Code im Schlüsselbund nicht verfügbar";
+"Token expired - run claude to refresh it" = "Token abgelaufen – führe claude aus, um es zu erneuern";
+"Usage API returned HTTP %lld" = "Nutzungs-API meldet HTTP %lld";
+"Invalid usage response" = "Ungültige Antwort der Nutzungs-API";
+"Usage API request failed: %@" = "Anfrage an die Nutzungs-API fehlgeschlagen: %@";
+"Launch at Login could not be changed." = "„Bei der Anmeldung öffnen“ konnte nicht geändert werden.";
+
+/* Menu items */
+"Refresh Now" = "Jetzt aktualisieren";
+"Auto Refresh" = "Automatisch aktualisieren";
+"Off" = "Aus";
+"Every %lld Minutes" = "Alle %lld Minuten";
+"Launch at Login" = "Bei der Anmeldung öffnen";
+"About ClaudeUsageBar" = "Über ClaudeUsageBar";
+"Quit ClaudeUsageBar" = "ClaudeUsageBar beenden";

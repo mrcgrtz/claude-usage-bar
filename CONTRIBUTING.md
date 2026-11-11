@@ -15,7 +15,8 @@ This file tells you how to change ClaudeUsageBar. For what the app does and how 
 | --- | --- |
 | `Sources/main.swift` | All of the app code. |
 | `Info.plist` | The bundle identifier, the version and the menu bar app settings. |
-| `InternetAccessPolicy.plist` | The [Internet Access Policy](https://www.obdev.at/iap/), which tells firewalls such as Little Snitch which connections the app makes and why. Update it when the app connects to a new host. |
+| `InternetAccessPolicy.plist` | The [Internet Access Policy](https://www.obdev.at/iap/), which tells firewalls such as Little Snitch which connections the app makes and why. Update it when the app connects to a new host. Its texts are in `Resources/*.lproj/InternetAccessPolicy.strings`. |
+| `Resources/de.lproj/Localizable.strings` | The German texts of the app. |
 | `build.sh` | Builds, installs and packages the app. |
 | `scripts/make-icon.swift` | Draws `AppIcon.icns`. |
 | `scripts/make-dmg-background.swift` | Draws `DMGBackground.tiff`, the background of the DMG window. |
@@ -61,6 +62,16 @@ The project has no automatic tests. Build the app and do a check of the change i
 3. Commit the script and the file that it writes.
 
 If you move the icons in the DMG background, also change their positions in `scripts/make-dmg-layout.sh`. Run it on a Mac with `scripts/make-dmg-layout.sh` and commit `DMGLayout.DS_Store`.
+
+## Translations
+
+The app is in English and German. The English texts are in the code, and they are also the keys for the German texts.
+
+1. Put each new text in `String(localized:)`, for example `String(localized: "Refresh Now")`.
+2. Add the German text to `Resources/de.lproj/Localizable.strings`. For a text with values, the key has `%lld` for a whole number and `%@` for other values, for example `"Every %lld Minutes" = "Alle %lld Minuten";`.
+3. Build the app, then check the German texts. To start the app in German, run `build/ClaudeUsageBar.app/Contents/MacOS/ClaudeUsageBar -AppleLanguages '(de)'`.
+
+If you change a text in the code, also change its key in the German file. Otherwise the app shows the English text.
 
 ## Commits and pull requests
 

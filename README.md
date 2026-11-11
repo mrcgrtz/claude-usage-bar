@@ -13,6 +13,8 @@ The menu shows:
 - The time of the last update.
 - An error message, if the last update failed. The menu bar then shows a warning triangle instead of the gauge.
 
+The app is in English and German. It uses the language, time format and number format of your Mac.
+
 ## Requirements
 
 - macOS 14 or later, on an Intel Mac or a Mac with Apple silicon.

@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>ApplicationDescription</key>
-	<string>ClaudeUsageBar shows the usage limits of your Claude account in the menu bar.</string>
+	<string>ApplicationDescription</string>
 	<key>DeveloperName</key>
 	<string>Marc Görtz</string>
 	<key>Website</key>
@@ -20,9 +20,9 @@
 			<key>Port</key>
 			<string>443</string>
 			<key>Purpose</key>
-			<string>ClaudeUsageBar gets the usage of your Claude account from Anthropic. It sends the login token of Claude Code with the request. It connects when you click Refresh now, at the auto refresh interval, and after the Mac wakes from sleep.</string>
+			<string>UsagePurpose</string>
 			<key>DenyConsequences</key>
-			<string>If you deny these connections, ClaudeUsageBar cannot show your usage. The menu then shows an error.</string>
+			<string>UsageDenyConsequences</string>
 		</dict>
 	</array>
 </dict>

@@ -1,0 +1,4 @@
+/* Texts of InternetAccessPolicy.plist, which firewalls such as Little Snitch show. */
+"ApplicationDescription" = "ClaudeUsageBar zeigt die Nutzungslimits deines Claude-Kontos in der Menüleiste.";
+"UsagePurpose" = "ClaudeUsageBar fragt die Nutzung deines Claude-Kontos bei Anthropic ab und sendet dazu das Anmeldetoken von Claude Code mit. Die App verbindet sich, wenn du auf „Jetzt aktualisieren“ klickst, im Intervall der automatischen Aktualisierung und nachdem der Mac aus dem Ruhezustand aufwacht.";
+"UsageDenyConsequences" = "Wenn du diese Verbindungen verbietest, kann ClaudeUsageBar deine Nutzung nicht anzeigen. Das Menü zeigt dann einen Fehler.";

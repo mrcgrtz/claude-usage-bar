@@ -40,7 +40,7 @@ struct Usage: Decodable {
 final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     private let settingsKey = "refreshMinutes"
     private let refreshOptions = [5, 10, 20, 30, 60]
-    private let labels = ["session": "5-hour", "weekly_all": "Weekly"]
+    private let labels = ["session": String(localized: "5-hour"), "weekly_all": String(localized: "Weekly")]
 
     private var item: NSStatusItem!
     private var usage: Usage?
@@ -84,9 +84,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         let gauge = "gauge.with.dots.needle.67percent"
         let warningSymbol = "exclamationmark.triangle"
         let image = warning
-            ? NSImage(systemSymbolName: warningSymbol, accessibilityDescription: "Error")
+            ? NSImage(systemSymbolName: warningSymbol, accessibilityDescription: String(localized: "Error"))
             : Bundle.main.image(forResource: "claude-icon")
-                ?? NSImage(systemSymbolName: gauge, accessibilityDescription: "Claude usage")
+                ?? NSImage(systemSymbolName: gauge, accessibilityDescription: String(localized: "Claude usage"))
         image?.size = NSSize(width: 16, height: 16)
         image?.isTemplate = true
         return image
@@ -99,8 +99,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     private func used(_ limit: Usage.Limit?) -> String {
-        guard let percent = limit?.percent else { return "N/A" }
-        return "\(Int(percent.rounded()))%"
+        guard let percent = limit?.percent else { return String(localized: "N/A") }
+        return (percent / 100).formatted(.percent.precision(.fractionLength(0)))
     }
 
     private func updateTitle() {
@@ -112,7 +112,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         }
         item.button?.image = Self.icon(warning: errorMessage != nil)
         item.button?.title = title
-        item.button?.toolTip = errorMessage ?? "Claude usage: 5-hour · weekly"
+        item.button?.toolTip = errorMessage ?? String(localized: "Claude usage: 5-hour · weekly")
     }
 
     // MARK: Fetch
@@ -132,7 +132,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         inFlight = true
         Task {
             guard let token = await Self.readToken() else {
-                return finish("Claude Code Keychain credentials unavailable")
+                return finish(String(localized: "Claude Code Keychain credentials unavailable"))
             }
             await fetch(token)
         }
@@ -169,17 +169,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             let (body, response) = try await URLSession.shared.data(for: request)
             let status = (response as? HTTPURLResponse)?.statusCode ?? 0
             if status == 401 {
-                return finish("Token expired - run claude to refresh it")
+                return finish(String(localized: "Token expired - run claude to refresh it"))
             }
             if status != 200 {
-                return finish("Usage API returned HTTP \(status)")
+                return finish(String(localized: "Usage API returned HTTP \(status)"))
             }
             guard let data = try? JSONDecoder().decode(Usage.self, from: body) else {
-                return finish("Invalid usage response")
+                return finish(String(localized: "Invalid usage response"))
             }
             finish(nil, data)
         } catch {
-            finish("Usage API request failed: \(error.localizedDescription)")
+            finish(String(localized: "Usage API request failed: \(error.localizedDescription)"))
         }
     }
 
@@ -204,7 +204,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         let menu = NSMenu()
         for minutes in [0] + refreshOptions {
             let entry = NSMenuItem(
-                title: minutes == 0 ? "Off" : "Every \(minutes) Minutes",
+                title: minutes == 0 ? String(localized: "Off") : String(localized: "Every \(minutes) Minutes"),
                 action: #selector(selectAutoRefresh(_:)), keyEquivalent: ""
             )
             entry.target = self
@@ -228,7 +228,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         } catch where service.status != .requiresApproval {
             NSApp.activate()
             let alert = NSAlert()
-            alert.messageText = "Launch at Login could not be changed."
+            alert.messageText = String(localized: "Launch at Login could not be changed.")
             alert.informativeText = error.localizedDescription
             alert.runModal()
         } catch {}
@@ -264,7 +264,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     private func resetTime(_ iso: String?) -> String {
         guard let iso, let date = Self.isoParsers.lazy.compactMap({ $0.date(from: iso) }).first else {
-            return "unknown"
+            return String(localized: "unknown")
         }
         // The format style follows the 12- or 24-hour setting and the language of the Mac.
         if Calendar.current.isDateInToday(date) {
@@ -279,43 +279,42 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         menu.addItem(entry)
     }
 
+    @discardableResult
+    private func addAction(_ menu: NSMenu, _ title: String, _ action: Selector?, key: String = "") -> NSMenuItem {
+        let entry = NSMenuItem(title: title, action: action, keyEquivalent: key)
+        entry.target = self
+        menu.addItem(entry)
+        return entry
+    }
+
     func menuNeedsUpdate(_ menu: NSMenu) {
         menu.removeAllItems()
         if let usage {
             for limit in usage.limits {
                 let label = labels[limit.kind] ?? limit.kind.replacingOccurrences(of: "_", with: " ")
-                addInfo(menu, "\(label): \(used(limit)) used, resets \(resetTime(limit.resets_at))")
+                addInfo(menu, String(localized: "\(label): \(used(limit)) used, resets \(resetTime(limit.resets_at))"))
             }
             if let spend = usage.spend, spend.enabled == true, let spent = spend.used, let cap = spend.limit {
-                addInfo(menu, "Extra usage: \(spent.formatted) / \(cap.formatted)")
+                addInfo(menu, String(localized: "Extra usage: \(spent.formatted) / \(cap.formatted)"))
             }
             menu.addItem(.separator())
-            addInfo(menu, "Updated: \(lastUpdated ?? "-")")
+            addInfo(menu, String(localized: "Updated: \(lastUpdated ?? "-")"))
         }
         if let errorMessage {
             addInfo(menu, errorMessage)
         }
         menu.addItem(.separator())
 
-        let refreshItem = NSMenuItem(title: "Refresh Now", action: #selector(refreshNow), keyEquivalent: "r")
-        refreshItem.target = self
-        menu.addItem(refreshItem)
-
-        let autoItem = NSMenuItem(title: "Auto Refresh", action: nil, keyEquivalent: "")
-        autoItem.submenu = autoRefreshMenu()
-        menu.addItem(autoItem)
-
-        let loginItem = NSMenuItem(title: "Launch at Login", action: #selector(toggleLaunchAtLogin), keyEquivalent: "")
-        loginItem.target = self
-        loginItem.state = SMAppService.mainApp.status == .enabled ? .on : .off
-        menu.addItem(loginItem)
+        addAction(menu, String(localized: "Refresh Now"), #selector(refreshNow), key: "r")
+        addAction(menu, String(localized: "Auto Refresh"), nil).submenu = autoRefreshMenu()
+        addAction(menu, String(localized: "Launch at Login"), #selector(toggleLaunchAtLogin)).state =
+            SMAppService.mainApp.status == .enabled ? .on : .off
 
         menu.addItem(.separator())
-        let aboutItem = NSMenuItem(title: "About ClaudeUsageBar", action: #selector(showAbout), keyEquivalent: "")
-        aboutItem.target = self
-        menu.addItem(aboutItem)
+        addAction(menu, String(localized: "About ClaudeUsageBar"), #selector(showAbout))
+        // Quit goes to NSApplication, not to this delegate.
         let quit = #selector(NSApplication.terminate(_:))
-        menu.addItem(NSMenuItem(title: "Quit ClaudeUsageBar", action: quit, keyEquivalent: "q"))
+        menu.addItem(NSMenuItem(title: String(localized: "Quit ClaudeUsageBar"), action: quit, keyEquivalent: "q"))
     }
 }
 
