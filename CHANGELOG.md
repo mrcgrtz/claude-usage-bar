@@ -5,6 +5,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.4] - 2026-11-11
+
 ### Added
 
 - Rules: show a notification or run a shortcut when the 5-hour, weekly or extra usage reaches a threshold.
@@ -49,7 +51,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - README with a screenshot, and changelog.
 - SwiftLint check in GitHub Actions.
 
-[Unreleased]: https://github.com/mrcgrtz/claude-usage-bar/compare/v0.3...main
+[Unreleased]: https://github.com/mrcgrtz/claude-usage-bar/compare/v0.4...main
+[0.4]: https://github.com/mrcgrtz/claude-usage-bar/releases/tag/v0.4
 [0.3]: https://github.com/mrcgrtz/claude-usage-bar/releases/tag/v0.3
 [0.2]: https://github.com/mrcgrtz/claude-usage-bar/releases/tag/v0.2
 [0.1]: https://github.com/mrcgrtz/claude-usage-bar/releases/tag/v0.1
