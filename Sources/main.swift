@@ -200,14 +200,19 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, UNUser
     // The app has no windows of its own, so it must come to the front for the About window.
     @objc private func showAbout() {
         NSApp.activate()
-        // The credits show below the copyright, as a link to the website of the developer.
+        // The credits show below the copyright: the license and a link to the website of the developer.
         let paragraph = NSMutableParagraphStyle()
         paragraph.alignment = .center
-        let credits = NSAttributedString(string: "marcgoertz.de", attributes: [
+        let font = NSFont.systemFont(ofSize: NSFont.smallSystemFontSize)
+        let credits = NSMutableAttributedString(
+            string: String(localized: "Released under the MIT License.") + "\n",
+            attributes: [.font: font, .foregroundColor: NSColor.secondaryLabelColor, .paragraphStyle: paragraph]
+        )
+        credits.append(NSAttributedString(string: "marcgoertz.de", attributes: [
             .link: URL(string: "https://marcgoertz.de")!,
-            .font: NSFont.systemFont(ofSize: NSFont.smallSystemFontSize),
+            .font: font,
             .paragraphStyle: paragraph
-        ])
+        ]))
         NSApp.orderFrontStandardAboutPanel(options: [.credits: credits])
     }
 

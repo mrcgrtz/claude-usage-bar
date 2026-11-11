@@ -5,6 +5,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Added
+
+- MIT License. The About window shows it.
+
 ## [0.5] - 2026-11-11
 
 ### Added

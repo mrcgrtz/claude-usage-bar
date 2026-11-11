@@ -37,6 +37,7 @@
 "Every %lld Minutes" = "Alle %lld Minuten";
 "Settings…" = "Einstellungen …";
 "About ClaudeUsageBar" = "Über ClaudeUsageBar";
+"Released under the MIT License." = "Veröffentlicht unter der MIT-Lizenz.";
 "Quit ClaudeUsageBar" = "ClaudeUsageBar beenden";
 
 /* Settings window */
