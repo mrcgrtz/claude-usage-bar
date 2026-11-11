@@ -1,4 +1,5 @@
 import AppKit
+import ServiceManagement
 
 // MARK: - Usage API model
 
@@ -207,6 +208,29 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         return menu
     }
 
+    // MARK: Launch at login
+
+    @objc private func toggleLaunchAtLogin() {
+        let service = SMAppService.mainApp
+        do {
+            if service.status == .enabled {
+                try service.unregister()
+            } else {
+                try service.register()
+            }
+        } catch where service.status != .requiresApproval {
+            NSApp.activate()
+            let alert = NSAlert()
+            alert.messageText = "Launch at Login could not be changed."
+            alert.informativeText = error.localizedDescription
+            alert.runModal()
+        } catch {}
+        // When the user turned the app off in Login Items, only System Settings can turn it on again.
+        if service.status == .requiresApproval {
+            SMAppService.openSystemSettingsLoginItems()
+        }
+    }
+
     // MARK: Menu
 
     private static let isoParsers: [ISO8601DateFormatter] = {
@@ -256,6 +280,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         let autoItem = NSMenuItem(title: "Auto refresh", action: nil, keyEquivalent: "")
         autoItem.submenu = autoRefreshMenu()
         menu.addItem(autoItem)
+
+        let loginItem = NSMenuItem(title: "Launch at Login", action: #selector(toggleLaunchAtLogin), keyEquivalent: "")
+        loginItem.target = self
+        loginItem.state = SMAppService.mainApp.status == .enabled ? .on : .off
+        menu.addItem(loginItem)
 
         menu.addItem(.separator())
         menu.addItem(NSMenuItem(title: "Quit", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))

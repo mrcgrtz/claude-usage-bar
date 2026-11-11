@@ -26,7 +26,7 @@ The menu shows:
 3. Open the app. The app is not notarised, thus macOS blocks it the first time. Go to **System Settings → Privacy & Security** and click **Open Anyway**.
 4. When macOS asks for access to the `Claude Code-credentials` Keychain item, click **Always Allow**.
 
-To start the app when you log in, add it to **System Settings → General → Login Items**.
+To start the app when you log in, turn on **Launch at Login** in its menu.
 
 ## Build
 
@@ -47,6 +47,7 @@ To use a custom menu bar icon, put a `claude-icon.png` file in the repository ro
 - **Refresh now** (⌘R) gets the usage data immediately.
 - **Auto refresh** sets the update interval: off, or every 5, 10, 20, 30 or 60 minutes. The default is 30 minutes.
 - The app also gets new data 10 seconds after the Mac wakes from sleep.
+- **Launch at Login** starts the app when you log in. If you turned the app off in **System Settings → General → Login Items**, the menu item opens that page, so that you can turn it on again there.
 
 ## Troubleshooting
 
