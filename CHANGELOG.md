@@ -5,6 +5,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.3] - 2026-11-11
+
 ### Added
 
 - **Launch at Login** menu item.
@@ -37,6 +39,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - README with a screenshot, and changelog.
 - SwiftLint check in GitHub Actions.
 
-[Unreleased]: https://github.com/mrcgrtz/claude-usage-bar/compare/v0.2...main
+[Unreleased]: https://github.com/mrcgrtz/claude-usage-bar/compare/v0.3...main
+[0.3]: https://github.com/mrcgrtz/claude-usage-bar/releases/tag/v0.3
 [0.2]: https://github.com/mrcgrtz/claude-usage-bar/releases/tag/v0.2
 [0.1]: https://github.com/mrcgrtz/claude-usage-bar/releases/tag/v0.1
