@@ -9,6 +9,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 - **Launch at Login** menu item.
 
+### Changed
+
+- Reset times and extra usage amounts follow the time format, language and region of the Mac.
+
 ## [0.2] - 2026-11-11
 
 ### Added

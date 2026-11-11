@@ -25,7 +25,11 @@ struct Usage: Decodable {
         let currency: String?
 
         var formatted: String {
-            String(format: "%.\(exponent)f", amount_minor / pow(10, Double(exponent)))
+            let amount = amount_minor / pow(10, Double(exponent))
+            guard let currency else {
+                return amount.formatted(.number.precision(.fractionLength(exponent)))
+            }
+            return amount.formatted(.currency(code: currency).precision(.fractionLength(exponent)))
         }
     }
 }
@@ -243,10 +247,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         guard let iso, let date = Self.isoParsers.lazy.compactMap({ $0.date(from: iso) }).first else {
             return "unknown"
         }
-        let format = Calendar.current.isDateInToday(date) ? "HH:mm" : "EEE HH:mm"
-        let formatter = DateFormatter()
-        formatter.dateFormat = format
-        return formatter.string(from: date)
+        // The format style follows the 12- or 24-hour setting and the language of the Mac.
+        if Calendar.current.isDateInToday(date) {
+            return date.formatted(.dateTime.hour().minute())
+        }
+        return date.formatted(.dateTime.weekday(.abbreviated).hour().minute())
     }
 
     private func addInfo(_ menu: NSMenu, _ title: String) {
@@ -263,7 +268,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 addInfo(menu, "\(label): \(used(limit)) used, resets \(resetTime(limit.resets_at))")
             }
             if let spend = usage.spend, spend.enabled == true, let spent = spend.used, let cap = spend.limit {
-                addInfo(menu, "Extra usage: \(spent.formatted) / \(cap.formatted) \(spent.currency ?? "")")
+                addInfo(menu, "Extra usage: \(spent.formatted) / \(cap.formatted)")
             }
             menu.addItem(.separator())
             addInfo(menu, "Updated: \(lastUpdated ?? "-")")
