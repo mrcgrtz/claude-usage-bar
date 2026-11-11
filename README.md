@@ -2,7 +2,7 @@
 
 ClaudeUsageBar is a macOS menu bar app. It shows how much of your Claude plan limits you used.
 
-![ClaudeUsageBar menu with the 5-hour, weekly and extra usage](docs/screenshot.png)
+<img src="docs/screenshot.png" width="410" alt="ClaudeUsageBar menu with the 5-hour and weekly usage">
 
 The menu bar shows two values: the 5-hour limit and the weekly limit, for example `42% · 18%`, or `42 % · 18 %` in German.
 
@@ -57,6 +57,8 @@ To use a custom menu bar icon, put a `claude-icon.png` file in the repository ro
 ## Rules
 
 A rule does something when the usage of a limit reaches a threshold. For example, it can show a notification when the weekly usage reaches 80 %, or run a shortcut that turns on a Focus when the 5-hour usage reaches 95 %.
+
+<img src="docs/settings.png" width="708" alt="Rules pane of the ClaudeUsageBar settings with three rules">
 
 To add a rule, open **Settings…**, choose **Rules** and click **Add Rule**. To change a rule, double-click it or select it and click **Edit**. **Duplicate** copies the selected rule, and **Remove** (or the Delete key) removes it. Turn off **Active** to keep a rule without running it.
 
